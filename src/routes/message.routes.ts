@@ -1,10 +1,10 @@
 import { FastifyInstance } from "fastify";
 import { sendMessage } from "../services/whatsapp.service";
 import { messageSchema } from "../schemas/message.schema";
-import { verifyToken } from "../middlewares/auth";
+import { verifyTokenMiddleware } from "../middlewares/verifyToken.middlewares";
 
 export async function messageRoutes(fastify: FastifyInstance) {
-  fastify.post("/send-message", { preHandler: verifyToken }, async (request, reply) => {
+  fastify.post("/send-message", { preHandler: verifyTokenMiddleware }, async (request, reply) => {
     // Valida os dados da requisição
     const validation = messageSchema.safeParse(request.body);
 

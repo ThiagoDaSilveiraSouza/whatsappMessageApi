@@ -4,7 +4,7 @@ import { messageRoutes } from "./routes/message.routes";
 import fastifyJwt from "@fastify/jwt";
 import cors from "@fastify/cors";
 import "dotenv/config";
-import { tokenRoutes } from "./routes/token.routes";
+import { authRoutes } from "./routes/auth.routes";
 
 const fastify = Fastify({
   logger: {
@@ -35,8 +35,8 @@ fastify.register(rateLimit, {
   timeWindow: "1 minute", // A cada 1 minuto
 });
 
-// 📌Rota que usa JWT
-fastify.register(tokenRoutes);
+// 📌Rota para autenticar
+fastify.register(authRoutes);
 // 📌Rota para mensagem do whatsapp
 fastify.register(messageRoutes);
 
