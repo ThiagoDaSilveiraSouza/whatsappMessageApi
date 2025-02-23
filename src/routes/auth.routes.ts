@@ -1,9 +1,10 @@
 import { FastifyInstance } from "fastify";
 import { loginSchema, LoginSchema } from "../schemas/login.schema";
 import { createUserSchema, CreateUserSchema } from "../schemas/createUser.schema";
+import { createUserSchemaSwagger, loginSchemaSwagger } from "../docs/auth.swagger";
 
 export async function authRoutes(fastify: FastifyInstance) {
-  fastify.post("/login", async (request, reply) => {
+  fastify.post("/login", { schema: loginSchemaSwagger }, async (request, reply) => {
     // Valida os dados da requisição
     const validation = loginSchema.safeParse(request.body);
 
@@ -36,7 +37,7 @@ export async function authRoutes(fastify: FastifyInstance) {
     }
 
   });
-  fastify.post("/create-user", async (request, reply) => {
+  fastify.post("/create-user", { schema: createUserSchemaSwagger }, async (request, reply) => {
     // Valida os dados da requisição
     const validation = createUserSchema.safeParse(request.body);
     if (!validation.success) {
@@ -62,7 +63,7 @@ export async function authRoutes(fastify: FastifyInstance) {
       return reply.status(500).send({ error: "Erro ao criar usuário" });
     }
   })
-  fastify.post("update-user", async (request, reply) => {
+  fastify.patch("/update-user", async (request, reply) => {
     // Valida os dados da requisição
     const validation = loginSchema.safeParse(request.body);
   })
