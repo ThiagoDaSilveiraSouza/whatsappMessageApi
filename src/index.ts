@@ -4,6 +4,7 @@ import { messageRoutes } from "./routes/message.routes";
 import fastifyJwt from "@fastify/jwt";
 import cors from "@fastify/cors";
 import "dotenv/config";
+import { tokenRoutes } from "./routes/token.routes";
 
 const fastify = Fastify({
   logger: {
@@ -17,12 +18,14 @@ const fastify = Fastify({
   },
 });
 
+// 🛠️ Registre o JWT primeiro!
 fastify.register(fastifyJwt, {
   secret: process.env.JWT_SECRET || "supersecretkey",
 });
 
+// Configuração do CORS
 fastify.register(cors, {
-  origin: ["https://meusite.com"], // Permitir apenas este domínio
+  origin: ["localhost"], // Permitir apenas este domínio
   methods: ["POST"], // Apenas POST permitido
 });
 
@@ -32,6 +35,9 @@ fastify.register(rateLimit, {
   timeWindow: "1 minute", // A cada 1 minuto
 });
 
+// 📌Rota que usa JWT
+fastify.register(tokenRoutes);
+// 📌Rota para mensagem do whatsapp
 fastify.register(messageRoutes);
 
 const start = async () => {
