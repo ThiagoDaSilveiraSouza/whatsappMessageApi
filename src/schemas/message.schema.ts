@@ -1,13 +1,11 @@
 import { z } from "zod";
 
 export const messageSchema = z.object({
-  phone: z
-    .string()
-    .min(10, { message: "O telefone deve ter pelo menos 10 dígitos." })
-    .regex(/^\+?[1-9]\d{1,14}$/, { message: "Número de telefone inválido. Use o formato internacional." }),
-
-  message: z
-    .string()
-    .min(1, { message: "A mensagem não pode estar vazia." })
-    .max(500, { message: "A mensagem não pode ter mais de 500 caracteres." }),
+  phone: z.string()
+    .min(10, "O telefone deve ter no mínimo 10 dígitos")
+    .regex(/^\d+$/, "O telefone deve conter apenas números"),
+  message: z.string()
+    .min(1, "A mensagem não pode estar vazia")
+    .trim() // Remove espaços extras
+    .max(500, "A mensagem não pode ter mais de 500 caracteres"),
 });
